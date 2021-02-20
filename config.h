@@ -88,6 +88,7 @@ static Key keys[] = {
 	//aplication hotkeys
 	{ MODKEY,                       XK_f,      spawn,	   {.v = web} },
 	{ MODKEY,                       XK_e,      spawn,	   SHCMD( TERMINAL  " -e " TERMINAL_FILEBROWSER ) },
+	{ MODKEY|ControlMask,           XK_e,      spawn,	   {.v = "nemo"} },
 
 	//Layouts
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
