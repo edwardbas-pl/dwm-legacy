@@ -1,3 +1,4 @@
+#include <X11/XF86keysym.h>
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
@@ -69,6 +70,13 @@ static const char *dmenucmd[] = { "dmenu_run",   "-h" , "25", "-l", "20" ,"-m", 
 //static const char *dmenucmd[] = { "dmenu_run" , NULL };
 static const char *termcmd[]  = { TERMINAL , NULL };
 static const char *web[]  = { "firefox", NULL };
+static const char *mutecmd[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+static const char *volupcmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
+static const char *voldowncmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
+static const char *brupcmd[] = { "xbacklight",  "-inc", "+5%", NULL };
+static const char *brdowncmd[] = { "pactl", "-dec", "-5%", NULL };
+
+
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -102,6 +110,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ 0,  				XF86XK_AudioRaiseVolume, spawn, { .v = volupcmd } },
+	{ 0, 				XF86XK_AudioMute, spawn, {.v = mutecmd } },
+	{ 0, 				XF86XK_AudioLowerVolume, spawn, {.v = voldowncmd } },
+	{ 0, XF86XK_MonBrightnessUp, spawn, {.v = brupcmd} },
+	{ 0, XF86XK_MonBrightnessDown, spawn, {.v = brdowncmd} },
 
 	//Tags
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -116,6 +129,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
+
+
 };
 
 /* button definitions */
