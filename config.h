@@ -28,8 +28,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "galculator",     NULL,       NULL,       0,            1,           -1 },
+	{ "Galculator",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
@@ -51,6 +50,7 @@ static const Layout layouts[] = {
 #define TERMINAL_FILEBROWSER "ranger"
 #define FILE_BROWSER "nemo"
 #define MAIL "thunderbird"
+#define CALC "galculator"
 
 
 /* key definitions */
@@ -69,12 +69,14 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run",   "-h" , "25", "-l", "20" ,"-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 //static const char *dmenucmd[] = { "dmenu_run" , NULL };
 static const char *termcmd[]  = { TERMINAL , NULL };
-static const char *web[]  = { "firefox", NULL };
-static const char *mutecmd[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+static const char *web[]  = { BROWSER, NULL };
+static const char *mutecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
 static const char *volupcmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
 static const char *voldowncmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *brupcmd[] = { "xbacklight",  "-inc", "5", NULL };
 static const char *brdowncmd[] = { "xbacklight", "-dec", "5", NULL };
+static const char *mail[] = { MAIL, NULL };
+static const char *calc[] = { CALC, NULL };
 
 
 
@@ -85,8 +87,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY|ControlMask,           XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY|ControlMask,           XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ControlMask,           XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_d,      incnmaster,     {.i = -1 } },
 //	{ MODKEY,                       XK_Return, zoom,           {0} },
@@ -96,11 +98,15 @@ static Key keys[] = {
 	//aplication hotkeys
 	{ MODKEY,                       XK_f,      spawn,	   {.v = web} },
 	{ MODKEY,                       XK_e,      spawn,	   SHCMD( TERMINAL  " -e " TERMINAL_FILEBROWSER ) },
-	{ MODKEY|ControlMask,           XK_e,      spawn,	   {.v = "nemo"} },
+	{ MODKEY|ControlMask,           XK_e,      spawn,	   SHCMD( FILE_BROWSER ) },
+	{ MODKEY,        		XK_s,      spawn,	   SHCMD( "steam" ) },
+	{ MODKEY,        		XK_l,      spawn,	   SHCMD( "lutris" ) },
+	{ MODKEY,        		XK_w,      spawn,	   SHCMD( "lowriter" ) },
+	{ MODKEY|ShiftMask,    		XK_n,      spawn,	   SHCMD( "networkmanager_dmenu" ) },
+	{ MODKEY|ShiftMask,    		XK_m,      spawn,	   SHCMD( "usb" ) },
 
 	//Layouts
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-//	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 //	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
@@ -110,11 +116,15 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ 0,  				XF86XK_AudioRaiseVolume, spawn, { .v = volupcmd } },
-	{ 0, 				XF86XK_AudioMute, spawn, {.v = mutecmd } },
-	{ 0, 				XF86XK_AudioLowerVolume, spawn, {.v = voldowncmd } },
-	{ 0, XF86XK_MonBrightnessUp, spawn, {.v = brupcmd} },
-	{ 0, XF86XK_MonBrightnessDown, spawn, {.v = brdowncmd} },
+	{ 0,  				XF86XK_AudioRaiseVolume,   spawn, 		{ .v = volupcmd } },
+	{ 0, 				XF86XK_AudioMute, 	   spawn, 		{.v = mutecmd } },
+	{ 0, 				XF86XK_AudioLowerVolume,   spawn, 		{.v = voldowncmd } },
+	{ 0, 				XF86XK_MonBrightnessUp,    spawn, 		{.v = brupcmd} },
+	{ 0, 				XF86XK_MonBrightnessDown,  spawn, 		{.v = brdowncmd} },
+	{ 0, 				XF86XK_Mail,  		   spawn, 		{.v = mail} },
+	{ 0, 				XF86XK_Search, 		   spawn, 		SHCMD( "bookmarks" ) },
+	{ 0, 				XF86XK_Calculator,	   spawn, 		{.v = calc} },
+	{ 0, 				XF86XK_HomePage,	   spawn, 		{.v = web} },
 
 	//Tags
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
