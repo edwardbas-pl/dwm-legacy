@@ -104,6 +104,7 @@ static Key keys[] = {
 	{ MODKEY,        		XK_w,      spawn,	   SHCMD( "lowriter" ) },
 	{ MODKEY|ShiftMask,    		XK_n,      spawn,	   SHCMD( "networkmanager_dmenu" ) },
 	{ MODKEY|ShiftMask,    		XK_m,      spawn,	   SHCMD( "usb" ) },
+	{ MODKEY|ShiftMask,    		XK_p,      spawn,	   SHCMD( "powermenu" ) },
 
 	//Layouts
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -125,6 +126,10 @@ static Key keys[] = {
 	{ 0, 				XF86XK_Search, 		   spawn, 		SHCMD( "bookmarks" ) },
 	{ 0, 				XF86XK_Calculator,	   spawn, 		{.v = calc} },
 	{ 0, 				XF86XK_HomePage,	   spawn, 		{.v = web} },
+	{ 0, 				XF86XK_AudioPlay,	   spawn, 		SHCMD( "playerctl play-pause" ) },
+	{ 0, 				XF86XK_AudioPrev,	   spawn, 		SHCMD( "playerctl previous" ) },
+	{ 0, 				XF86XK_AudioNext,	   spawn, 		SHCMD( "playerctl next" ) },
+	{ 0, 				XF86XK_AudioStop,	   spawn, 		SHCMD( "playerctl stop" ) },
 
 	//Tags
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
