@@ -105,7 +105,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,    		XK_n,      spawn,	   SHCMD( "networkmanager_dmenu" ) },
 	{ MODKEY|ShiftMask,    		XK_m,      spawn,	   SHCMD( "usb" ) },
 	{ MODKEY|ShiftMask,    		XK_p,      spawn,	   SHCMD( "powermenu" ) },
-	{ MODKEY|ControlMask,  		XK_l,      spawn,	   SHCMD( "betterlockscreen -l" ) },
 
 	//Layouts
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
